@@ -9,5 +9,5 @@ export PATH=$PATH:$JAVA_HOME/bin
 /etc/init.d/jetty start
 
 #Override the exit command to prevent accidental container destruction.
-echo 'alias exit="This will kill the container. Use Ctrl+p, Ctrl+q to detach or Ctrl+p, Ctrl+d to exit"' > ~/.bashrc
+echo 'alias exit="echo This will not kill the container. Use Ctrl+p, Ctrl+q to detach or Ctrl+p, Ctrl+d to exit"' > ~/.bashrc
 bash 
