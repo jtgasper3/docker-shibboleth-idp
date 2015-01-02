@@ -4,4 +4,5 @@
   <Set name="extractWAR">false</Set>
   <Set name="copyWebDir">false</Set>
   <Set name="copyWebInf">true</Set>
+  <Set name="overrideDescriptor"><Property name="jetty.webapps" default="."/>/idp.d/override-web.xml</Set>
 </Configure>
