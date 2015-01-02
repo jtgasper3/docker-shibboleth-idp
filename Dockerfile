@@ -77,6 +77,7 @@ RUN useradd jetty -U -s /bin/false \
 ADD run-shibboleth.sh /opt/
 RUN chmod +x /opt/run-shibboleth.sh
 
-EXPOSE 80 443 8443
+## Opening 443 (browser TLS), 8443 (SOAP/mutual TLS auth)... 80 specifically excluded.
+EXPOSE 443 8443
 
 CMD ["/opt/run-shibboleth.sh"]
