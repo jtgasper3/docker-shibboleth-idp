@@ -6,6 +6,7 @@ ENV JRE_HOME /opt/jre1.7.0_71
 ENV JAVA_HOME /opt/jre1.7.0_71
 ENV JETTY_HOME /opt/jetty
 ENV JETTY_BASE /opt/iam-jetty-base
+ENV PATH $PATH:$JRE_HOME/bin
 
 RUN yum -y update
 RUN yum -y install wget tar unzip
@@ -74,10 +75,11 @@ RUN useradd jetty -U -s /bin/false \
     && chown -R jetty:jetty /opt/iam-jetty-base
 
 
-ADD run-shibboleth.sh /opt/
-RUN chmod +x /opt/run-shibboleth.sh
+ADD *.sh /opt/
+RUN chmod +x /opt/*.sh
 
 ## Opening 443 (browser TLS), 8443 (SOAP/mutual TLS auth)... 80 specifically excluded.
 EXPOSE 443 8443
 
+VOLUME ["/data-export","/data-import"]
 CMD ["/opt/run-shibboleth.sh"]
