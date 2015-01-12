@@ -1,24 +1,38 @@
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 2.4.3 running on Java Runtime 1.7 update 71 running on the latest CentOS 7.
+This Docker image contains a deployed Shibboleth IdP 2.4.3 running on Java Runtime 1.7 update 71 running on the latest CentOS 7 base.
 
 The intention is that this image can be used as a base overriding the configuration with local changes, or as an appliance and used directly.
 
 > This image requires acceptance of the Java License Agreement (<http://www.oracle.com/technetwork/java/javase/terms/license/index.html>).
 
 ## Running
-> Detailed instructions coming soon.
+> Instructions on utilizing this image is coming soon.
+
+### Appliance Use
+This will use the default container storage to store the idp configuration. 
+
+> If you do not have an existing configuration to import, you **must** run:   
+>   `$ docker exec -i gasper-test reset-idp.sh`   
+>   after starting the container. Otherwise you will be running with a well-known (unsafe) encryption/signing key. (Be sure to start the container to accept the new config.)
+
+
+Start the container:
+```
+$ docker run -dP --name="gasper-test" -v ~/docker/dest:/external-mount jtgasper3/docker-shibboleth-idp 
+```
+
+Update the Jetty/Shibboleth config by importing an existing config: 
 
 ```
-$ docker run -dP --name="gasper-test2" -v ~/docker/dest:/external-mount jtgasper3/docker-shibboleth-idp 
-```
+$ docker exec gasper-test import.sh
 
 ```
-$ docker exec gasper-test2 import.sh
+then stop the container and restart it to pick up changes.
+
+Besure to export any changes and store them elsewhere. If a container is deleted your config (signing/config keys will be losts.)
 
 ```
-
-```
-$ docker exec gasper-test2 export.sh
+$ docker exec gasper-test export.sh
 
 ```
 
