@@ -6,9 +6,20 @@ The intention is that this image can be used as a base overriding the configurat
 > This image requires acceptance of the Java License Agreement (<http://www.oracle.com/technetwork/java/javase/terms/license/index.html>).
 
 ## Running
+> Detailed instructions coming soon.
 
 ```
-$ docker run docker run -itdP jtgasper3/docker-shibboleth-idp
+$ docker run -dP --name="gasper-test2" -v ~/docker/dest:/external-mount jtgasper3/docker-shibboleth-idp 
+```
+
+```
+$ docker exec gasper-test2 import.sh
+
+```
+
+```
+$ docker exec gasper-test2 export.sh
+
 ```
 
 ## Building
@@ -29,6 +40,7 @@ The following references provided some form of guidence for this project:
 * https://github.com/Maluuba/docker-files/tree/master/docker-jetty
 * https://registry.hub.docker.com/u/dockerfile/java/
 * https://github.com/jfroche/docker-shibboleth-idp
+* http://mrbluecoat.blogspot.com/2014/10/docker-traps-and-how-to-avoid-them.html
 
 ## LICENSE
 

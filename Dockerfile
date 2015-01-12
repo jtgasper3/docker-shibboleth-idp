@@ -6,10 +6,10 @@ ENV JRE_HOME /opt/jre1.7.0_71
 ENV JAVA_HOME /opt/jre1.7.0_71
 ENV JETTY_HOME /opt/jetty
 ENV JETTY_BASE /opt/iam-jetty-base
-ENV PATH $PATH:$JRE_HOME/bin
+ENV PATH $PATH:$JRE_HOME/bin:/opt/container-scripts
 
-RUN yum -y update
-RUN yum -y install wget tar unzip
+RUN yum -y update \
+    && yum -y install wget tar unzip
 
 # Downlaod Java, verify the hash, and install
 RUN set -x; \
@@ -75,11 +75,12 @@ RUN useradd jetty -U -s /bin/false \
     && chown -R jetty:jetty /opt/iam-jetty-base
 
 
-ADD *.sh /opt/
-RUN chmod +x /opt/*.sh
+ADD container-scripts/ /opt/container-scripts/
+RUN chmod -R +x /opt/container-scripts/
 
 ## Opening 443 (browser TLS), 8443 (SOAP/mutual TLS auth)... 80 specifically excluded.
 EXPOSE 443 8443
 
-VOLUME ["/data-export","/data-import"]
-CMD ["/opt/run-shibboleth.sh"]
+VOLUME ["/external-mount"]
+
+CMD ["run-shibboleth.sh"]
