@@ -23,9 +23,9 @@ RUN set -x; \
 
 # Download Jetty, verify the hash, and install, initialize a new base
 RUN set -x; \
-    jetty_version=9.2.7.v20150116; \
+    jetty_version=9.2.9.v20150224; \
     wget -O jetty.zip "https://eclipse.org/downloads/download.php?file=/jetty/$jetty_version/dist/jetty-distribution-$jetty_version.zip&r=1" \
-    && echo "0d7dc3e4c72d63bd34fabef8c96dabf7b744a15d  jetty.zip" | sha1sum -c - \
+    && echo "edb18daf54d7f8bf499c1581fc24c427f3678885  jetty.zip" | sha1sum -c - \
     && unzip jetty.zip -d /opt \
     && mv /opt/jetty-distribution-$jetty_version /opt/jetty \
     && rm jetty.zip \
@@ -49,11 +49,11 @@ RUN set -x; \
 
 # Download Shibboleth IdP, verify the hash, and install
 RUN set -x; \
-    shibidp_version=2.4.3; \
-    wget https://shibboleth.net/downloads/identity-provider/2.4.3/shibboleth-identityprovider-$shibidp_version-bin.zip \
-    && echo "9f2787c64f56c6f6020ac5d01e62bf0f8851755c  shibboleth-identityprovider-$shibidp_version-bin.zip" | sha1sum -c - \
+    shibidp_version=2.4.4; \
+    wget https://shibboleth.net/downloads/identity-provider/2.4.4/shibboleth-identityprovider-$shibidp_version-bin.zip \
+    && echo "abfd64f87569cde72e8c335fe9800604dd9909a9  shibboleth-identityprovider-$shibidp_version-bin.zip" | sha1sum -c - \
     && unzip shibboleth-identityprovider-$shibidp_version-bin.zip -d /opt \
-    && rm shibboleth-identityprovider-2.4.3-bin.zip \
+    && rm shibboleth-identityprovider-2.4.4-bin.zip \
     && cd /opt/shibboleth-identityprovider-$shibidp_version \
     && sed -i 's/keystorePassword="\${idp.keystore.pass}"/keystorePassword="CHANGEME"/g' /opt/shibboleth-identityprovider-$shibidp_version/src/installer/resources/build.xml \
     && ./install.sh
