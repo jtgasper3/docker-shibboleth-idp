@@ -23,9 +23,9 @@ RUN set -x; \
 
 # Download Jetty, verify the hash, and install, initialize a new base
 RUN set -x; \
-    jetty_version=9.2.7.v20150116; \
+    jetty_version=9.2.9.v20150224; \
     wget -O jetty.zip "https://eclipse.org/downloads/download.php?file=/jetty/$jetty_version/dist/jetty-distribution-$jetty_version.zip&r=1" \
-    && echo "0d7dc3e4c72d63bd34fabef8c96dabf7b744a15d  jetty.zip" | sha1sum -c - \
+    && echo "edb18daf54d7f8bf499c1581fc24c427f3678885  jetty.zip" | sha1sum -c - \
     && unzip jetty.zip -d /opt \
     && mv /opt/jetty-distribution-$jetty_version /opt/jetty \
     && rm jetty.zip \
