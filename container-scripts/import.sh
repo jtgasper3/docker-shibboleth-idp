@@ -22,11 +22,11 @@ fi
 if [ -d /external-mount/webapp/ ];
 then
 	echo "Updating the Shibboleth webapp artifacts."
-	cp -R /external-mount/webapp/ /opt/shibboleth-identityprovider-2.4.3/src/main/
+	cp -R /external-mount/webapp/ /opt/shibboleth-idp/webapp/
 
 	echo "Rebuilding the idp.war file"
-	cd /opt/shibboleth-identityprovider-2.4.3
-	./install.sh -Didp.home.input=/opt/shibboleth-idp -Dinstall.config=no
+	cd /opt/shibboleth-idp
+	bin/build.sh
 fi
 
 if [ -d /external-mount/keystore ];

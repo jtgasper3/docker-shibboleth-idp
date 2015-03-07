@@ -1,5 +1,5 @@
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 2.4.4 running on Java Runtime 1.7 update 71 and Jetty 9.2.9 running on the latest CentOS 7 base.
+This Docker image contains a deployed Shibboleth IdP 3.0 running on Java Runtime 1.7 update 71 and Jetty 9.2.9 running on the latest CentOS 7 base.
 
 This image can be used as a base image overriding the configuration with local changes, or as an appliance and used directly by using a local configuration.
 
@@ -62,16 +62,23 @@ basedir
 |-- conf
 |   |-- attribute-filter.xml
 |   |-- attribute-resolver.xml
-|   |-- handler.xml
-|   |-- internal.xml
-|   |-- logging.xml
+|   |-- credentials.xml
+|   |-- idp.properties
+|   |-- ldap.properties
 |   |-- login.config
+|   |-- metadata-providers.xml
 |   |-- relying-party.xml
-|   |-- service.xml
+|   |-- services.xml
 |-- credentials
-|   |-- idp.crt
-|   |-- idp.jks
-|   |-- idp.key
+|   |-- idp-backchannel.crt
+|   |-- idp-backchannel.jks
+|   |-- idp-backchannel.p12
+|   |-- idp-encryption.crt
+|   |-- idp-encryption.key
+|   |-- idp-signing.crt
+|   |-- idp-signing.key
+|   |-- sealer.jks
+|   |-- sealer.kver
 |-- keystore
 |-- metadata
 |   |-- idp-metadata.xml
@@ -89,11 +96,10 @@ Next, assuming the Dockerfile is similar to this example:
 ```
 FROM jtgasper3/shibboleth-idp
 
-ADD conf/ /opt/shibboleth/conf/
-ADD credentials/ /opt/shibboleth/credentials/
+ADD conf/ /opt/shibboleth-idp/conf/
+ADD credentials/ /opt/shibboleth-idp/credentials/
 ADD metadata/ /opt/shibboleth/metadata/
-
-ADD webapp/ /opt/shibboleth-identityprovider-2.4.3/src/main/webapp/
+ADD webapp/ /opt/shibboleth-idp/webapp/
 
 ADD keystore $JETTY_BASE/etc/keystore
 ```
@@ -135,7 +141,7 @@ The following references provided some form of guidence for this project:
 
 ## LICENSE
 
-Copyright 2014 John Gasper
+Copyright 2015 John Gasper
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

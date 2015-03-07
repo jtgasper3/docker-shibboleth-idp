@@ -49,14 +49,19 @@ RUN set -x; \
 
 # Download Shibboleth IdP, verify the hash, and install
 RUN set -x; \
-    shibidp_version=2.4.4; \
-    wget https://shibboleth.net/downloads/identity-provider/2.4.4/shibboleth-identityprovider-$shibidp_version-bin.zip \
-    && echo "abfd64f87569cde72e8c335fe9800604dd9909a9  shibboleth-identityprovider-$shibidp_version-bin.zip" | sha1sum -c - \
-    && unzip shibboleth-identityprovider-$shibidp_version-bin.zip -d /opt \
-    && rm shibboleth-identityprovider-2.4.4-bin.zip \
-    && cd /opt/shibboleth-identityprovider-$shibidp_version \
-    && sed -i 's/keystorePassword="\${idp.keystore.pass}"/keystorePassword="CHANGEME"/g' /opt/shibboleth-identityprovider-$shibidp_version/src/installer/resources/build.xml \
-    && ./install.sh
+    shibidp_version=3.0.0; \
+    wget https://shibboleth.net/downloads/identity-provider/$shibidp_version/shibboleth-identity-provider-$shibidp_version.zip \
+    && echo "db36645f1e2ec40eb6034ea8ffba6934ea221499  shibboleth-identity-provider-$shibidp_version.zip" | sha1sum -c - \
+    && unzip shibboleth-identity-provider-$shibidp_version.zip -d /opt \
+    && cd /opt/shibboleth-identity-provider-$shibidp_version/ \
+    && bin/install.sh -Didp.keystore.password=CHANGEME -Didp.sealer.password=CHANGEME -Didp.host.name=localhost.localdomain \
+    && cd / \
+    && keytool -v -importkeystore -srckeystore /opt/shibboleth-idp/credentials/idp-backchannel.p12 -srcstoretype PKCS12 -destkeystore /opt/shibboleth-idp/credentials/idp-backchannel.jks -deststoretype JKS -srcstorepass CHANGEME -deststorepass CHANGEME \
+    && chmod -R +r /opt/shibboleth-idp/ \
+    && sed -i 's/ password/CHANGEME/g' /opt/shibboleth-idp/conf/idp.properties \
+    && echo "-Didp.home=/opt/shibboleth-idp" >> /opt/iam-jetty-base/start.ini \
+    && echo "--exec" >> /opt/iam-jetty-base/start.ini \
+    && rm -r /shibboleth-identity-provider-$shibidp_version.zip /opt/shibboleth-identity-provider-$shibidp_version/ 
 
 
 # Download the library to allow SOAP Endpoints, verify the hash, and place
