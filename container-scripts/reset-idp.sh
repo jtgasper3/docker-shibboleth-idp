@@ -1,4 +1,9 @@
 #!/bin/sh
 
-cd /opt/shibboleth-identityprovider-2.4.3/
-./install.sh
+cd /opt/shibboleth-idp/bin
+
+rm -rf ../credentials/
+rm -rf ../metadata/
+rm -rf ../conf/
+
+./build.sh init gethostname metadata-gen
