@@ -2,8 +2,8 @@ FROM centos:centos7
 
 MAINTAINER John Gasper <jtgasper3@gmail.com>
 
-ENV JRE_HOME /opt/jre1.7.0_71
-ENV JAVA_HOME /opt/jre1.7.0_71
+ENV JRE_HOME /opt/jre1.7.0_75
+ENV JAVA_HOME /opt/jre1.7.0_75
 ENV JETTY_HOME /opt/jetty
 ENV JETTY_BASE /opt/iam-jetty-base
 ENV PATH $PATH:$JRE_HOME/bin:/opt/container-scripts
@@ -13,19 +13,19 @@ RUN yum -y update \
 
 # Downlaod Java, verify the hash, and install
 RUN set -x; \
-    java_version=7u71; \
+    java_version=7u75; \
     wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-    http://download.oracle.com/otn-pub/java/jdk/$java_version-b14/jre-$java_version-linux-x64.tar.gz \
-    && echo "7605134662f6c87131eca5745895fe84  jre-$java_version-linux-x64.tar.gz" | md5sum -c - \
+    http://download.oracle.com/otn-pub/java/jdk/$java_version-b13/jre-$java_version-linux-x64.tar.gz \
+    && echo "1869f0d2dac96372e3c345105543ba3e  jre-$java_version-linux-x64.tar.gz" | md5sum -c - \
     && tar -zxvf jre-$java_version-linux-x64.tar.gz -C /opt \
     && rm jre-$java_version-linux-x64.tar.gz
 
 
 # Download Jetty, verify the hash, and install, initialize a new base
 RUN set -x; \
-    jetty_version=9.2.9.v20150224; \
+    jetty_version=9.2.10.v20150310; \
     wget -O jetty.zip "https://eclipse.org/downloads/download.php?file=/jetty/$jetty_version/dist/jetty-distribution-$jetty_version.zip&r=1" \
-    && echo "edb18daf54d7f8bf499c1581fc24c427f3678885  jetty.zip" | sha1sum -c - \
+    && echo "45b03a329990cff2719d1d7a1d228f3b7f6065e8  jetty.zip" | sha1sum -c - \
     && unzip jetty.zip -d /opt \
     && mv /opt/jetty-distribution-$jetty_version /opt/jetty \
     && rm jetty.zip \
