@@ -49,9 +49,9 @@ RUN set -x; \
 
 # Download Shibboleth IdP, verify the hash, and install
 RUN set -x; \
-    shibidp_version=3.1.0; \
+    shibidp_version=3.1.1; \
     wget https://shibboleth.net/downloads/identity-provider/$shibidp_version/shibboleth-identity-provider-$shibidp_version.zip \
-    && echo "e6c7eed4bf9c78201709e6a1471bdc996abe6961  shibboleth-identity-provider-$shibidp_version.zip" | sha1sum -c - \
+    && echo "06a7b0cedd9246c10664fb75c84ea2cc2477d8c2  shibboleth-identity-provider-$shibidp_version.zip" | sha1sum -c - \
     && unzip shibboleth-identity-provider-$shibidp_version.zip -d /opt \
     && cd /opt/shibboleth-identity-provider-$shibidp_version/ \
     && bin/install.sh -Didp.keystore.password=CHANGEME -Didp.sealer.password=CHANGEME -Didp.host.name=localhost.localdomain \
