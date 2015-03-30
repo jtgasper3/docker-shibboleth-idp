@@ -23,7 +23,7 @@ $ docker run -dP --name="idp-test" -v ~/docker/shib-config:/external-mount jtgas
 ```
 
 > If you do not have an existing configuration to import, after starting the container you **must** run:   
-> `$ docker exec -i idp-test reset-idp.sh`   
+> `$ docker exec -it idp-test reset-idp.sh`   
 > **Otherwise you will be running with a well-known (unsafe) encryption/signing key.** (Be sure to restart the container to accept the new config.)
 
 
