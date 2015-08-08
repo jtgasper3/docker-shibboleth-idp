@@ -124,7 +124,7 @@ $ docker run -dP --name="shib-local-test" org_id/shibboleth-idp
 From source:
 
 ```
-$ docker build --tag="org_id/shibboleth-idp" github.com/jtgasper3/shibboleth-idp
+$ docker build --tag="org_id/shibboleth-idp" github.com/jtgasper3/docker-shibboleth-idp
 ```
 
 ## Author
