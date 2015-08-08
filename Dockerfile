@@ -77,7 +77,8 @@ RUN yum -y remove wget tar unzip; yum clean all
 
 RUN useradd jetty -U -s /bin/false \
     && chown -R jetty:jetty /opt/jetty \
-    && chown -R jetty:jetty /opt/iam-jetty-base
+    && chown -R jetty:jetty /opt/iam-jetty-base \
+    && chown -R jetty:jetty /opt/shibboleth-idp/logs
 
 
 ADD container-scripts/ /opt/container-scripts/
