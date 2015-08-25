@@ -19,7 +19,7 @@ This will use the default container storage to store the idp configuration.
 #### Starting the container
 
 ```
-$ docker run -dP --name="idp-test" -v ~/docker/shib-config:/external-mount jtgasper3/docker-shibboleth-idp 
+$ docker run -dP --name="idp-test" -v ~/docker/shib-config:/external-mount jtgasper3/shibboleth-idp 
 ```
 
 > If you do not have an existing configuration to import, after starting the container you **must** run:   
