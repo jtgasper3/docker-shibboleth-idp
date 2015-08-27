@@ -19,7 +19,7 @@ This will use the default container storage to store the idp configuration.
 #### Starting the container
 
 ```
-$ docker run -dP --name="idp-test" -v ~/docker/shib-config:/external-mount jtgasper3/docker-shibboleth-idp 
+$ docker run -dP --name="idp-test" -v ~/docker/shib-config:/external-mount jtgasper3/shibboleth-idp 
 ```
 
 > If you do not have an existing configuration to import, after starting the container you **must** run:   
@@ -115,7 +115,7 @@ docker build --tag="<org_id>/shibboleth-idp" .
 Now, just execute the new image:
 
 ```
-$ docker run -dP --name="shib-local-test" org_id/docker-shibboleth-idp 
+$ docker run -dP --name="shib-local-test" org_id/shibboleth-idp 
 ```
 > The `-v` parameter is not needed as in the other case because there is no need to import/export the configuration.
 
