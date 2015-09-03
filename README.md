@@ -1,5 +1,5 @@
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 3.1.1 running on Java Runtime 1.7 update 79 and Jetty 9.2.10 running on the latest CentOS 7 base.
+This Docker image contains a deployed Shibboleth IdP 3.1.2 running on Java Runtime 1.8 update 60 and Jetty 9.3.2 running on the latest CentOS 7 base.
 
 This image can be used as a base image overriding the configuration with local changes, or as an appliance and used directly by using a local configuration.
 

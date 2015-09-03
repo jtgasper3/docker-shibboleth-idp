@@ -2,8 +2,8 @@ FROM centos:centos7
 
 MAINTAINER John Gasper <jtgasper3@gmail.com>
 
-ENV JRE_HOME /opt/jre1.7.0_79
-ENV JAVA_HOME /opt/jre1.7.0_79
+ENV JRE_HOME /opt/jre1.8.0_60
+ENV JAVA_HOME /opt/jre1.8.0_60
 ENV JETTY_HOME /opt/jetty
 ENV JETTY_BASE /opt/iam-jetty-base
 ENV PATH $PATH:$JRE_HOME/bin:/opt/container-scripts
@@ -11,33 +11,33 @@ ENV PATH $PATH:$JRE_HOME/bin:/opt/container-scripts
 RUN yum -y update \
     && yum -y install wget tar unzip
 
-# Downlaod Java, verify the hash, and install
+# Download Java, verify the hash, and install
 RUN set -x; \
-    java_version=7u79; \
+    java_version=8u60; \
     wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-    http://download.oracle.com/otn-pub/java/jdk/$java_version-b15/jre-$java_version-linux-x64.tar.gz \
-    && echo "fcd884a57920d90fa23240abb403fcf5  jre-$java_version-linux-x64.tar.gz" | md5sum -c - \
+    http://download.oracle.com/otn-pub/java/jdk/$java_version-b27/jre-$java_version-linux-x64.tar.gz \
+    && echo "49dadecd043152b3b448288a35a4ee6f3845ce6395734bacc1eae340dff3cbf5  jre-$java_version-linux-x64.tar.gz" | sha256sum -c - \
     && tar -zxvf jre-$java_version-linux-x64.tar.gz -C /opt \
     && rm jre-$java_version-linux-x64.tar.gz
 
 
 # Download Jetty, verify the hash, and install, initialize a new base
 RUN set -x; \
-    jetty_version=9.2.10.v20150310; \
+    jetty_version=9.3.2.v20150730; \
     wget -O jetty.zip "https://eclipse.org/downloads/download.php?file=/jetty/$jetty_version/dist/jetty-distribution-$jetty_version.zip&r=1" \
-    && echo "45b03a329990cff2719d1d7a1d228f3b7f6065e8  jetty.zip" | sha1sum -c - \
+    && echo "b2cb3f4dc7f15c480a06749d9f19fa8b79cc691c  jetty.zip" | sha1sum -c - \
     && unzip jetty.zip -d /opt \
     && mv /opt/jetty-distribution-$jetty_version /opt/jetty \
     && rm jetty.zip \
     && cp /opt/jetty/bin/jetty.sh /etc/init.d/jetty \
     && mkdir -p /opt/iam-jetty-base/modules \
     && mkdir -p /opt/iam-jetty-base/lib/ext \
+    && mkdir -p /opt/iam-jetty-base/resources \
     && cd /opt/iam-jetty-base \
     && touch start.ini \
     && $JRE_HOME/bin/java -jar ../jetty/start.jar --add-to-startd=http,https,deploy,ext,annotations,jstl,logging,setuid \
-    && sed -i 's/jetty.port=8080/jetty.port=80/g' /opt/iam-jetty-base/start.d/http.ini \
-    && sed -i 's/https.port=8443/https.port=443/g' /opt/iam-jetty-base/start.d/https.ini \
-    && sed -i 's/jetty.secure.port=8443/jetty.secure.port=443/g' /opt/iam-jetty-base/start.d/ssl.ini \
+    && sed -i 's/# jetty.http.port=8080/jetty.http.port=80/g' /opt/iam-jetty-base/start.d/http.ini \
+    && sed -i 's/# jetty.ssl.port=8443/jetty.ssl.port=443/g' /opt/iam-jetty-base/start.d/ssl.ini \
     && sed -i 's/<New id="DefaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler"\/>/<New id="DefaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler"><Set name="showContexts">false<\/Set><\/New>/g' /opt/jetty/etc/jetty.xml
 
 # Download setuid, verify the hash, and place
@@ -49,19 +49,16 @@ RUN set -x; \
 
 # Download Shibboleth IdP, verify the hash, and install
 RUN set -x; \
-    shibidp_version=3.1.1; \
+    shibidp_version=3.1.2; \
     wget https://shibboleth.net/downloads/identity-provider/$shibidp_version/shibboleth-identity-provider-$shibidp_version.zip \
-    && echo "06a7b0cedd9246c10664fb75c84ea2cc2477d8c2  shibboleth-identity-provider-$shibidp_version.zip" | sha1sum -c - \
+    && echo "0c6747b28b1f76eb6fd1a1f2b9fce99c70e70be2e9ef0099f84a006673123027  shibboleth-identity-provider-$shibidp_version.zip" | sha256sum -c - \
     && unzip shibboleth-identity-provider-$shibidp_version.zip -d /opt \
     && cd /opt/shibboleth-identity-provider-$shibidp_version/ \
     && bin/install.sh -Didp.keystore.password=CHANGEME -Didp.sealer.password=CHANGEME -Didp.host.name=localhost.localdomain \
     && cd / \
-    && keytool -v -importkeystore -srckeystore /opt/shibboleth-idp/credentials/idp-backchannel.p12 -srcstoretype PKCS12 -destkeystore /opt/shibboleth-idp/credentials/idp-backchannel.jks -deststoretype JKS -srcstorepass CHANGEME -deststorepass CHANGEME \
     && chmod -R +r /opt/shibboleth-idp/ \
     && sed -i 's/ password/CHANGEME/g' /opt/shibboleth-idp/conf/idp.properties \
-    && echo "-Didp.home=/opt/shibboleth-idp" >> /opt/iam-jetty-base/start.ini \
-    && echo "--exec" >> /opt/iam-jetty-base/start.ini \
-    && rm -r /shibboleth-identity-provider-$shibidp_version.zip /opt/shibboleth-identity-provider-$shibidp_version/ 
+    && rm -r /shibboleth-identity-provider-$shibidp_version.zip /opt/shibboleth-identity-provider-$shibidp_version/
 
 
 # Download the library to allow SOAP Endpoints, verify the hash, and place
