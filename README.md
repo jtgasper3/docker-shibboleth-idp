@@ -1,5 +1,5 @@
 ## Overview
-This Docker image contains a deployed Shibboleth IdP 3.1.2 running on Java Runtime 1.8 update 60 and Jetty 9.3.2 running on the latest CentOS 7 base.
+This Docker image contains a deployed Shibboleth IdP 3.1.2 running on Java Runtime 1.8 update 60 and Jetty 9.3.3 running on the latest CentOS 7 base.
 
 This image can be used as a base image overriding the configuration with local changes, or as an appliance and used directly by using a local configuration.
 
@@ -8,47 +8,10 @@ Jetty has been configured to use setuid and http traffic is handled by a non-roo
 > This image requires acceptance of the Java License Agreement (<http://www.oracle.com/technetwork/java/javase/terms/license/index.html>).
 
 ## Image Goal
-The goal behind this Dockerfile image is to provide a demonstrably secure end to end deployment of every external asset (Java, Jetty, Shibboleth IdP, and extensions). Each downloaded asset is verified against cryptographic hashes obtained from each vendor, but and in the Dockerfile to make the build essentially deterministic. **Because of the deterministic nature of the build, users should feel confident in using this Dockerfile/image either directly or as a base for applying their configuration on top of.**
+The goal behind this Dockerfile image is to provide a demonstrably secure end-to-end deployment of every component (Java, Jetty, Shibboleth IdP, and extensions). Each downloaded component is verified against cryptographic hashes obtained from each vendor and stored in the Dockerfile to make the build essentially deterministic. **Because of the deterministic nature of the build, users should feel confident in using this Dockerfile/image either directly or as a base for applying their configuration on top of, assuming the Centos7 base and Docker Registry are trusted.**
 
 ## Running
 Two methods of using the image described here.
-
-### Appliance Use
-This will use the default container storage to store the idp configuration. 
-
-#### Starting the container
-
-```
-$ docker run -dP --name="idp-test" -v ~/docker/shib-config:/external-mount jtgasper3/shibboleth-idp 
-```
-
-> If you do not have an existing configuration to import, after starting the container you **must** run:   
-> `$ docker exec -it idp-test reset-idp.sh`   
-> **Otherwise you will be running with a well-known (unsafe) encryption/signing key.** (Be sure to restart the container to accept the new config.)
-
-
-#### Importing an existing configuration
-Update the Jetty/Shibboleth config by importing an existing configuration into a running container: 
-
-```
-$ docker exec idp-test import.sh
-
-```
-Stop the container and restart it to pick up changes.
-
-#### Exporting the current configuration
-Besure to export any changes and store them elsewhere. If a container is deleted before you export your config, signing/config keys will be losts.
-
-```
-$ docker exec idp-test export.sh
-
-```
-
-#### Misc Notes on Execution
-The Shibboleth IdP logs can be explicitly mapped to local storage by adding `-v /local/path:/opt/shibboleth-idp/logs` when starting the container.
-
-Other advance docker storage strategies are also possible.
-
 
 ### Using as a Base
 This image is ideal for use as a base image for ones own deployment. 
@@ -90,20 +53,20 @@ basedir
 
 ```
 
-Next, assuming the Dockerfile is similar to this example:
+Next, assuming you create a Dockerfile similar to this example:
 
 ```
 FROM jtgasper3/shibboleth-idp
 
 ADD conf/ /opt/shibboleth-idp/conf/
 ADD credentials/ /opt/shibboleth-idp/credentials/
-ADD metadata/ /opt/shibboleth/metadata/
+ADD metadata/ /opt/shibboleth-idp/metadata/
 ADD webapp/ /opt/shibboleth-idp/webapp/
 
 ADD keystore $JETTY_BASE/etc/keystore
 ```
 
->This will take the base image that is available in the Docker repository and download it. Next, it overrides all of the base files with your local configuration.
+> This will take the base image that is available in the Docker repository and download it. Next, it overrides all of the base files with your local configuration.
 
 The dependant image can be built by running:
 
@@ -116,7 +79,43 @@ Now, just execute the new image:
 ```
 $ docker run -dP --name="shib-local-test" org_id/shibboleth-idp 
 ```
-> The `-v` parameter is not needed as in the other case because there is no need to import/export the configuration.
+> The `-v` parameter is not needed as in the other case because there is no need to import/export the configuration. It could still be used to create a mount point for log files.
+
+### Appliance Use
+This will use the default container storage to store the idp configuration. 
+
+#### Starting the container
+
+```
+$ docker run -dP --name="idp-test" -v ~/docker/shib-config:/external-mount jtgasper3/shibboleth-idp 
+```
+
+> If you do not have an existing configuration to import, after starting the container you **must** run:   
+> `$ docker exec -it idp-test reset-idp.sh`   
+> **Otherwise you will be running with a well-known (unsafe) encryption/signing key.** (Be sure to restart the container to accept the new config.)
+
+
+#### Importing an existing configuration
+Update the Jetty/Shibboleth config by importing an existing configuration into a running container: 
+
+```
+$ docker exec idp-test import.sh
+
+```
+Stop the container and restart it to pick up changes.
+
+#### Exporting the current configuration
+Besure to export any changes and store them elsewhere. If a container is deleted before you export your config, signing/config keys will be losts.
+
+```
+$ docker exec idp-test export.sh
+
+```
+
+#### Misc Notes on Execution
+The Shibboleth IdP logs can be explicitly mapped to local storage by adding `-v /local/path:/opt/shibboleth-idp/logs` when starting the container.
+
+Other advance docker storage strategies are also possible.
 
 ## Container Settings
 

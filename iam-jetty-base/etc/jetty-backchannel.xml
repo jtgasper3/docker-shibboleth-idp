@@ -12,8 +12,6 @@
         <Set name="KeyStorePath"><Property name="jetty.backchannel.sslContext.keyStorePath" /></Set>
         <Set name="KeyStoreType"><Property name="jetty.backchannel.sslContext.keyStoreType" /></Set>
         <Set name="KeyStorePassword"><Property name="jetty.backchannel.sslContext.keyStorePassword" /></Set>
-        <!-- This is a tweak to work around a bug in Jetty when using the PKCS12 keystore type. -->
-        <Set name="TrustStoreType"><Property name="jetty.backchannel.sslContext.keyStoreType" /></Set>
         <Set name="EndpointIdentificationAlgorithm"></Set>
         <Set name="renegotiationAllowed">false</Set>
         <Set name="useCipherSuitesOrder">true</Set>
