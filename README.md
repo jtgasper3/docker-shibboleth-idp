@@ -71,7 +71,6 @@ basedir
 |   |-- services.xml
 |-- credentials
 |   |-- idp-backchannel.crt
-|   |-- idp-backchannel.jks
 |   |-- idp-backchannel.p12
 |   |-- idp-encryption.crt
 |   |-- idp-encryption.key
@@ -118,6 +117,18 @@ Now, just execute the new image:
 $ docker run -dP --name="shib-local-test" org_id/shibboleth-idp 
 ```
 > The `-v` parameter is not needed as in the other case because there is no need to import/export the configuration.
+
+## Container Settings
+
+### Jetty's Maximum Heap Size Setting
+By default this container will execute Jetty with a setting 512m for Java's Maximum Heap Size. This can be overridden by `run`ing the container using the `-e JETTY_MAX_HEAP` flag like so:
+
+```
+docker run -dP -e JETTY_MAX_HEAP=1g shibboleth-idp 
+```
+
+> All values must conform to java's -Xmx values.
+
 
 ## Building
 
