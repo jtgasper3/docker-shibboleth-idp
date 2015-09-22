@@ -16,7 +16,7 @@ Two methods of using the image described here.
 ### Using as a Base
 This image is ideal for use as a base image for ones own deployment. 
 
-Assuming that you have a similar layout with your configuration, credentials, and war customizations. The struction could look like:
+Assuming that you have a similar layout with your configuration, credentials, and war customizations. The directory structure could look like:
 
 ```
 basedir
