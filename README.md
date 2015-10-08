@@ -142,7 +142,7 @@ $ docker build --tag="org_id/shibboleth-idp" github.com/jtgasper3/docker-shibbol
   * John Gasper (<https://jtgasper.github.io>, <jgasper@unicon.net>, <jtgasper3@gmail.com>)
 
 ## References
-The following references provided some form of guidence for this project:
+The following references provided some form of guidance for this project:
 
 * https://github.com/Maluuba/docker-files/tree/master/docker-jetty
 * https://registry.hub.docker.com/u/dockerfile/java/
