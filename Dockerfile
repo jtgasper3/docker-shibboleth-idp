@@ -10,7 +10,7 @@ ENV JETTY_MAX_HEAP 512m
 ENV PATH $PATH:$JRE_HOME/bin:/opt/container-scripts
 
 RUN yum -y update \
-    && yum -y install wget tar unzip
+    && yum -y install wget tar unzip which
 
 # Download Java, verify the hash, and install
 RUN set -x; \
