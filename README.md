@@ -1,3 +1,7 @@
+> This project is essential abandoned as the work has moved to a more notable location and has more folks working on it than just me (althought I continue to be the primary maintainer. Please check out https://hub.docker.com/r/unicon/shibboleth-idp/ and https://github.com/Unicon/shibboleth-idp-dockerized.
+
+
+
 ## Overview
 This Docker image contains a deployed Shibboleth IdP 3.1.2 running on Java Runtime 1.8 update 60 and Jetty 9.3.3 running on the latest CentOS 7 base.
 
