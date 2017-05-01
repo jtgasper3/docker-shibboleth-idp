@@ -103,10 +103,11 @@ $ docker run -dP --name="idp-test" -v ~/docker/shib-config:/external-mount jtgas
 Update the Jetty/Shibboleth config by importing an existing configuration into a running container: 
 
 ```
-$ docker exec idp-test import.sh
+$ docker exec -it idp-test import.sh
 
 ```
-Stop the container and restart it to pick up changes.
+
+Press enter to confirm the installation directory, then stop the container and restart it to pick up changes.
 
 #### Exporting the current configuration
 Besure to export any changes and store them elsewhere. If a container is deleted before you export your config, signing/config keys will be losts.
